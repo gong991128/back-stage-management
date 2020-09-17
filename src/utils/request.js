@@ -14,6 +14,7 @@ const service = axios.create({
 // request拦截器 request interceptor
 service.interceptors.request.use(
   config => {
+
     // 不传递默认开启loading
     // if (!config.hideloading) {
     //   // loading
@@ -24,8 +25,9 @@ service.interceptors.request.use(
     // if (store.getters.token) {
     //   config.headers['X-Token'] = ''
     // }
-    if (window.sessionStorage.getItem('token') == true) {
-      config.headers.token = window.sessionStorage.getItem('token')
+    // token令牌
+    if (window.sessionStorage.getItem('token')) {
+      config.headers.Authorization  = window.sessionStorage.getItem('token')
     }
     return config
   },

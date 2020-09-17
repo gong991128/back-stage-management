@@ -12,6 +12,47 @@ export function postlogin(params) {
   })
 }
 
+// home左侧菜单get方法
+export function getmenu(params) {
+  return request({
+    url: api.getmenu,
+    method: 'get',
+    params
+    
+  })
+}
+
+// 获取用户数据列表
+export function getusers(params) {
+  return request({
+    url: api.getusers,
+    method: 'get',
+    params  
+  })
+}
+// put方法获取用户状态
+export function putuserstate(params) {
+  return request({
+    url: api.putuserstate,
+    method: 'put',
+    params  
+  })
+}
+
+// post方法添加用户
+export function postaddusers(add) {
+  return request({
+    url: api.postaddusers,
+    method: 'post',
+    params:{
+      add
+    }
+    
+  })
+}
+
+
+
 // // 用户信息 post 方法
 // export function getUserInfo(data) {
 //   return request({

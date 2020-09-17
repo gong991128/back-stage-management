@@ -58,16 +58,16 @@
             // 点击登录
             login() {
                 this.$refs.loginref.validate(valid => {
-                    console.log(valid);
+                    // console.log(valid);
                     if (!valid) return;
                     postlogin(this.loginfrom).then(res => {
-                        console.log(res)
+                        // console.log(res)
                         if (res.data.meta.status !== 200) {
                             this.$message.error("登录失败")
                         } else {
                             this.$message.success("登录成功！")
                         }
-                        console.log(res.data.data.token)
+                        // console.log(res.data.data.token)
                         window.sessionStorage.setItem('token', res.data.data.token)
                         this.$router.push('/home')
                     }).catch((err) => {
