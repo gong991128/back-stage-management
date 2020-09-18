@@ -145,7 +145,7 @@
                     // 当前页数
                     pagenum: 1,
                     // 显示一页多少条数据
-                    pagesize: 2,
+                    pagesize: 10,
                 },
 
                 // 搜索关键字
@@ -158,14 +158,12 @@
                 modifyVisible: false,
                 // 根据id查询到的信息对象
                 modifyFrom: {},
-                // 修改用户的表单数据
-                // modifyFrom:{},
                 //添加用户表单数据
                 addForm: {
-                    username: '',
-                    password: '',
-                    email: '',
-                    mobile: '',
+                    username: 'gong',
+                    password: '123456',
+                    email: 'www@qq.com',
+                    mobile: '17634602403',
 
                 },
                 // 添加表单的归责验证对象
@@ -272,9 +270,14 @@
                     if (!valid) return
                     //    console.log(this.addForm)
                     // 可以发起网络请求
-                    postaddusers().then(res => {
-                        console.log(res.data)
+                    this.$http.post('users',this.addForm).then(res=>{
+                        console.log(res)
+                        this.addusers = false
+                        this.$message.success('更新用户信息成功')
+                        this.userlistinfo()
+
                     })
+                    
 
                 })
             },
@@ -296,7 +299,6 @@
                 this.$refs.modifyFromRef.validate(valid => {
                     console.log(valid)
                     if (!valid) return
-
                     // 发起给更改用户信息网络请求
                     this.$http.put('users/' + this.modifyFrom.id, {
                         email: this.modifyFrom.email,
@@ -336,6 +338,7 @@
                                 type: 'success',
                                 message: '删除成功!'
                             });
+                            this.userlistinfo()
                         }
                     })
                 }).catch(() => {
