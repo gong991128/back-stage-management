@@ -14,7 +14,8 @@ const routes = [
     children: [
       { path: '/welcome', component: () => import('../components/Welcome.vue') },
       { path: '/users', component: () => import('../views/user/Users.vue') },
-
+      { path: '/rights', component: () => import('../views/power/Rights.vue') },
+      { path: '/roles', component: () => import('../views/power/Roles.vue') },
     ]
   },
 
