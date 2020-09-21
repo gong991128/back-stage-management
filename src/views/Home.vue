@@ -2,7 +2,7 @@
     <el-container class="home_container">
         <!-- 头部区 -->
         <el-header>
-            <img width="75px" src="../assets/微信图片_20200915141108.jpg" alt="">
+            <img width="70px" src="../assets/微信图片_20200915141108.jpg" alt="">
             <h2>电商后台管理系统</h2>
             <el-button type="info" @click='quit'>退出</el-button>
         </el-header>
@@ -145,5 +145,11 @@
         width: 80%;
         display: flex;
         align-items: center;
+    }
+    .el-button{
+        width: 70px;
+        height: 40px;
+        border:1px solid whitesmoke;
+        margin-top: 10px;
     }
 </style>

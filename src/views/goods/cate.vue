@@ -11,14 +11,14 @@
             <!-- 添加按钮 -->
             <el-button @click="addcate">添加</el-button>
             <!-- 添加的对话框 -->
-            <el-dialog title="提示" :visible.sync="addcateVisible">
+            <el-dialog title="添加分类" :visible.sync="addcateVisible" width="50%" @close="addCateDialogClose">
                 <!-- 添加分类的 表单区 -->
                 <el-form :model="addCateForm" label-width="120px">
                     <el-form-item label="分类名称">
                         <el-input v-model="addCateForm.cat_name"></el-input>
                     </el-form-item>
 
-                    <el-form-item expand-trigger="hover" :model="addCateForm" label="父级分类：">
+                    <el-form-item expand-trigger="hover" ref="addCateFormRef" :model="addCateForm" label="父级分类：">
                         <!-- options 用来指定数据源 -->
                         <!-- props 用来指定配置对象 -->
                         <el-cascader v-model="selectedKeys" :options="parentCateList" :props="cascaderProps"
@@ -26,11 +26,9 @@
                         </el-cascader>
                     </el-form-item>
                 </el-form>
-
-
                 <span slot="footer" class="dialog-footer">
                     <el-button @click="addcateVisible = false">取 消</el-button>
-                    <el-button type="primary" @click="addCate">确 定</el-button>
+                    <el-button type="primary" @click="addCateOk">确 定</el-button>
                 </span>
             </el-dialog>
 
@@ -52,7 +50,8 @@
                 <!-- 操作 -->
                 <template slot="opt" slot-scope="scope">
                     <el-button size="mini" type="primary" icon="el-icon-edit">编辑</el-button>
-                    <el-button size="mini" type="danger" icon="el-icon-delete">删除</el-button>
+                    <el-button size="mini" type="danger" @click="cateById(scope.row.cat_id)" icon="el-icon-delete">删除
+                    </el-button>
                 </template>
             </tree-table>
 
@@ -80,7 +79,7 @@
                     pagesize: 5,
                 },
                 // 总条数
-                total: 30,
+                total: 0,
                 // 位table指定列的数据
                 columns: [
                     {
@@ -134,17 +133,17 @@
             }
         },
         created() {
+            // 触发商品分类列表请求
             this.getcateList()
-
         },
         methods: {
             // 商品分类列表请求
             getcateList() {
                 this.$http.get('categories', { params: this.queryInfo }).then(res => {
                     console.log(res.data.data.total)
+                    this.total = res.data.data.total
                     this.catelist = res.data.data.result
                 })
-
             },
             //监听 pagesize 改变的事件
             handleSizeChange(newsize) {
@@ -155,7 +154,6 @@
                 //获取到最新一页显示的数据  重新发送axios请求 这里是封装好的请求方法
                 this.getcateList()
             },
-
             // 监听 页码值 改变的事件
             handleCurrentChange(newPage) {
                 console.log(newPage)
@@ -169,7 +167,6 @@
                 // 先获取父级分类的数据列表 在展示出对话框
                 this.getparentCateList()
                 this.addcateVisible = true
-
             },
             // 获取父级分类的数据表
             getparentCateList() {
@@ -183,28 +180,77 @@
                 console.log(this.selectedKeys)
                 // 如果selecteKeys 数组length大于0 证明选中的父级分类
                 // 反之就说明没有选中任何父级分类
-                if(this.selectedKeys.length>0){
+                if (this.selectedKeys.length > 0) {
                     // 父级分类的id
                     this.addCateForm.cat_pid = this.selectedKeys[this.selectedKeys.length - 1]
-            //    为当前的分类的等级赋值
+                    //    为当前的分类的等级赋值
                     this.addCateForm.cat_level = this.selectedKeys.length
-                }else{
+                } else {
                     //父级分类的id
                     this.addCateForm.cat_pid = 0
                     // 为当前分类的等级赋值
-                    this.addCateForm.cat_level = 0  
+                    this.addCateForm.cat_level = 0
                 }
             },
             // 点击按钮 添加新的分类
-            addCate(){
+            addCate() {
                 console.log(this.addCateForm)
-            //    this.addcateVisible = false
+                //    this.addcateVisible = false
+            },
+            //监听对话框的关闭事件 重置表单数据
+            addCateDialogClose() {
+                //    级联选择器清空
+                this.selectedKeys = []
+                this.addCateForm.cat_level = 0
+                this.addCateForm.cat_pid = 0
+                this.addCateForm.cat_name = ""
+                //    this.$refs.addCateFormRef.resetFields()
+            },
+            // 点击添加分类
+            async addCateOk() {
+                const { data: res } = await this.$http.post('categories', this.addCateForm)
+
+                if (res.meta.status !== 201) {
+                    return this.$message.error('添加分类失败')
+                }
+                this.$message.success("添加分类成功!")
+                this.getcateList()
+                this.addcateVisible = false
+            },
+            // 根据id分类删除
+            cateById(id) {
+
+                this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    this.$http.delete(`categories/${id}`).then(res => {
+                        console.log(res.data)
+                        if (res.data.meta.status !== 200) {
+                            return this.$message.error('删除分类失败')
+                        }
+                        this.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                        this.getcateList()
+                    })
+
+                }).catch(() => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
             }
+        }
 
 
 
-        },
+
     }
+
 
 </script>
 <style scoped>
