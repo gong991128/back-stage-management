@@ -219,7 +219,6 @@
             },
             // 根据id分类删除
             cateById(id) {
-
                 this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
@@ -244,6 +243,8 @@
                     });
                 });
             }
+
+            //编辑商品分类
         }
 
 
@@ -258,7 +259,6 @@
         margin-top: 10px;
         /* height: 530px; */
     }
-
     .el-button {
         margin-bottom: 15px;
     }
