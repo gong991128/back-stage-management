@@ -1,19 +1,9 @@
-# myapp
+### 技术栈
+1. lodash（深拷贝插件）
+```js
+<!-- 需要引入 -->
+import _ from 'lodash'
 
-## Project setup
+ const aa = choneDeep(obj)
+//  （）里是需要深拷贝的对象 ，拷贝后 重新赋值
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
