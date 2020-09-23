@@ -20,6 +20,13 @@ import 'quill/dist/quill.bubble.css'
 // 将富文本编辑器，注册为全局可用的组件
 Vue.use(VueQuillEditor)
 
+// 时间线
+// import Timeline from './views/order/timeline/index'
+// import TimelineItem from './views/order/timeline-item/index'
+// Vue.use(Timeline)
+// Vue.use(TimelineItem)
+
+
 // 引入axios
 import axios from 'axios'
 // 配置请求的跟路径
